@@ -59,25 +59,26 @@ Compiles to a single statically linked `iperf3gui.exe` (~738 KB).
 
 ## 3. Directory Layout
 
+### 3.1 Inside the repository (everything you see on this page)
+
 ```
-iperf3-GUI-Win32/
-├── build.bat              Build script (windres + g++)
-├── iperf3gui.exe          Build output
-├── iperf3gui.lnk          Shortcut
-├── settings.ini           Config (same dir as the exe, created/updated at runtime)
-├── README/
-│   ├── README.md          Chinese full documentation
-│   └── README_EN.md       English full documentation (this file)
+iperf3-gui-win32/
+├── README.md              Simplified Chinese full documentation
+├── README_EN.md           English full documentation (mirrors the Chinese one)
+├── CHANGELOG.md           Change log
+├── CONTRIBUTING.md        Contributing guide (build / house rules / regression)
 ├── LICENSE                MIT license text
-├── logs/                  Test log output dir (optional)   **not published**
-├── tools/                 iperf3.exe + Cygwin runtime (**not distributed, bring your own**)   **not published**
-│   ├── iperf3.exe         Default path `.\tools\iperf3.exe`
-│   └── cygwin1.dll / cygcrypto-3.dll / cygz.dll
-├── iperf3.21/             Another iperf3 3.21 copy (what settings.ini currently points at)   **not published**
+├── build.bat              Build script (windres + g++)
+├── .gitignore             Excludes build artifacts, config, third-party binaries
+├── .gitattributes         Normalizes to LF
+├── screenshots/           UI screenshots
+│   ├── client.png
+│   ├── server.png
+│   ├── replay.png
+│   └── settings.png
 ├── test/
 │   ├── run_autotest.py    Regression orchestrator (17 cases, auto-starts a server)
-│   ├── autotest.ini       Case parameters (case_00 … case_16)
-│   └── results/           Run artifacts: per-case cmd/raw/summary + report.html   **not published**
+│   └── autotest.ini       Case parameters (case_00 … case_16)
 └── src/
     ├── main.c             Main window / control creation / events / persistence / i18n / theme
     ├── iperf3.c           iperf3 process management + output parsing (incl. JSON)
@@ -91,31 +92,37 @@ iperf3-GUI-Win32/
     ├── ui.h               AppState global state + control handles
     ├── resource.h         Control ID definitions
     ├── license_text.c     MIT license body (trilingual summary + always-English terms)
+    ├── license_text.h
     ├── help_text.c        "Notes" body (trilingual)
+    ├── help_text.h
     ├── app.rc             Resource script (icon + VERSIONINFO)
-    ├── app.ico            Application icon (multiple sizes)
-    └── app.res            Build artifact (.rc → .res)   **not published**
+    └── app.ico            Application icon (multiple sizes)
 ```
+
+**The repository contains no third-party binaries.** iperf3 and its Cygwin runtime, the
+compiled exe, local configuration and test logs are all kept out.
+
+### 3.2 Local workspace only (not in the repository)
+
+The development machine also carries the following. All of it is **machine-specific**
+and excluded by `.gitignore`:
+
+| Workspace item | Measured | Why it stays out |
+|---|---|---|
+| `tools/` + `iperf3.21/` | 8.9 MB each, 17.8 MB total | Third-party binaries (iperf3 is BSD-3-Clause; the Cygwin runtime carries its own licenses) — not the same provenance as this project's MIT |
+| `iperf3gui.exe` / `iperf3gui.lnk` | — | The exe goes to a GitHub Release asset instead; the .lnk carries an absolute path |
+| `settings.ini` | — | Contains an absolute local path |
+| `logs/*.log` | — | Contains internal IP addresses (e.g. `192.168.x.x`) and port numbers |
+| `src/app.res`, `test/results/` | — | Build / run artifacts, regenerated every time |
+| `*_备份_*` | 6 files | Working-habit noise |
 
 > Pre-edit backups (`*.c_备份_YYYYMMDD`, `README.md_备份_*`) are kept in the workspace per house rules;
 > delete them by hand once you are satisfied.
 
-#### What is excluded when publishing to GitHub
-
-Everything marked **not published** above stays out of the repository.
-Rationale (sizes are measured):
-
-| Excluded | Measured | Why |
-|---|---|---|
-| `tools/` + `iperf3.21/` | 8.9 MB each, 17.8 MB total | Third-party binaries (iperf3 is BSD-3-Clause; the Cygwin runtime carries its own licenses) — not the same provenance as this project's MIT |
-| `logs/*.log` | Contains internal IP addresses (e.g. `192.168.x.x`) and port numbers | Leaks internal network topology and the local machine's IP |
-| `settings.ini` | Contains an absolute local path | Leaks the local directory layout |
-| `*_备份_*` | 6 files | Working-habit noise |
-| `src/app.res`, `test/results/` | — | Build / run artifacts, regenerated every time |
-| `iperf3gui.exe`, `iperf3gui.lnk` | — | The exe goes to a GitHub Release asset instead; the .lnk carries an absolute path |
-
-After cleaning, the repository is about **0.60 MB** (sources, docs, regression scripts and screenshots).
-Users supply their own iperf3 (≥ 3.7) — see [§10](#10-iperf3-version-requirements).
+After cleaning, the repository is about **0.60 MB** (31 files: sources, docs, regression
+scripts and screenshots). Users supply their own iperf3 (≥ 3.7) — see
+[§10](#10-iperf3-version-requirements). The iperf3 path configured on the Settings page is
+never distributed with the repository.
 
 ---
 

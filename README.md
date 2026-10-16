@@ -60,25 +60,26 @@
 
 ## 3. 目录结构
 
+### 3.1 仓库内（本页所见的全部内容）
+
 ```
-iperf3-GUI-Win32/
-├── build.bat              编译脚本（windres + g++）
-├── iperf3gui.exe          编译产物
-├── iperf3gui.lnk          快捷方式
-├── settings.ini           配置（与 exe 同目录，运行时生成/更新）
-├── README/
-│   ├── README.md          中文完整文档（本文件）
-│   └── README_EN.md       英文完整文档（与中文逐节对应）
+iperf3-gui-win32/
+├── README.md              简体中文完整文档（本文件）
+├── README_EN.md           English 完整文档（与中文逐节对应）
+├── CHANGELOG.md           变更记录
+├── CONTRIBUTING.md        贡献指南（构建 / 铁律 / 回归测试）
 ├── LICENSE                MIT 许可全文
-├── logs/                  测试日志落盘目录（可选开启）　**不发布**
-├── tools/                 iperf3.exe 及 Cygwin 运行时（**不随包分发，自备**）　**不发布**
-│   ├── iperf3.exe         默认路径 `.\tools\iperf3.exe`
-│   └── cygwin1.dll / cygcrypto-3.dll / cygz.dll
-├── iperf3.21/             另一份 iperf3 3.21（当前 settings.ini 指向这里）　**不发布**
+├── build.bat              编译脚本（windres + g++）
+├── .gitignore             排除构建产物、配置、第三方二进制
+├── .gitattributes         统一 LF
+├── screenshots/           界面截图
+│   ├── client.png
+│   ├── server.png
+│   ├── replay.png
+│   └── settings.png
 ├── test/
 │   ├── run_autotest.py    回归测试编排器（17 用例，自动起服务端）
-│   ├── autotest.ini       用例参数（case_00 … case_16）
-│   └── results/           运行产物：每用例 cmd/raw/summary + report.html　**不发布**
+│   └── autotest.ini       用例参数（case_00 … case_16）
 └── src/
     ├── main.c             主窗口 / 控件创建 / 事件 / 持久化 / i18n / 主题
     ├── iperf3.c           iperf3 进程管理 + 输出解析（含 JSON）
@@ -92,30 +93,35 @@ iperf3-GUI-Win32/
     ├── ui.h               AppState 全局状态 + 控件句柄
     ├── resource.h         控件 ID 定义
     ├── license_text.c     MIT 许可正文（三语摘要 + 恒英文条款）
+    ├── license_text.h
     ├── help_text.c        「添加说明」正文（三语）
+    ├── help_text.h
     ├── app.rc             资源脚本（图标 + VERSIONINFO）
-    ├── app.ico            应用图标（多尺寸）
-    └── app.res            编译产物（.rc → .res）　**不发布**
+    └── app.ico            应用图标（多尺寸）
 ```
+
+**仓库里没有任何第三方二进制**：iperf3 及其 Cygwin 运行时、编译出的 exe、本机配置、
+测试日志一律不入库。
+
+### 3.2 本地工作区另有（不进仓库）
+
+开发机上除上述内容外还有这些，均为**本机专属**，已由 `.gitignore` 排除：
+
+| 工作区项 | 实测 | 为什么不进仓库 |
+|---|---|---|
+| `tools/` + `iperf3.21/` | 各 8.9 MB，共 17.8 MB | 第三方二进制（iperf3 为 BSD-3-Clause，Cygwin 运行时另有其许可），与本项目 MIT 不同源 |
+| `iperf3gui.exe` / `iperf3gui.lnk` | — | exe 改挂 GitHub Release 附件；lnk 含绝对路径 |
+| `settings.ini` | — | 含本机绝对路径 |
+| `logs/*.log` | — | 含内网 IP（如 `192.168.x.x`）与端口 |
+| `src/app.res`、`test/results/` | — | 构建 / 运行产物，每次重新生成 |
+| `*_备份_*` | 6 个 | 工作习惯噪音 |
 
 > 改源码前备份的文件（`*.c_备份_YYYYMMDD`、`README.md_备份_*`）按铁律保留在工作区，
 > 确认无误后可手工删除。
 
-#### 发布到 GitHub 时的取舍
-
-上面标注 **不发布** 的项一律不进仓库，理由如下（体积为实测值）：
-
-| 不发布项 | 实测 | 理由 |
-|---|---|---|
-| `tools/` + `iperf3.21/` | 各 8.9 MB，共 17.8 MB | 第三方二进制（iperf3 为 BSD-3-Clause，Cygwin 运行时另有其许可），与本项目 MIT 不同源 |
-| `logs/*.log` | 含内网 IP 与端口（如 `192.168.x.x`） | 泄露内网拓扑与本机 IP |
-| `settings.ini` | 含绝对路径 | 泄露本机目录结构 |
-| `*_备份_*` | 6 个 | 工作习惯噪音 |
-| `src/app.res`、`test/results/` | — | 构建 / 运行产物，每次重新生成 |
-| `iperf3gui.exe`、`iperf3gui.lnk` | — | exe 改挂 GitHub Release 附件；lnk 含绝对路径 |
-
-清洗后仓库约 **0.60 MB**（含源码、文档、回归脚本与截图）。
-用户需自备 iperf3（≥ 3.7），获取方式见 [§10](#10-iperf3-版本要求)。
+清洗后仓库约 **0.60 MB**（31 个文件：源码、文档、回归脚本与截图）。
+用户需自备 iperf3（≥ 3.7），获取方式见 [§10](#10-iperf3-版本要求)；
+程序内「设置」页指定的 iperf3 路径不随仓库分发。
 
 ---
 
