@@ -1,0 +1,24 @@
+# 构建产物
+src/app.res
+*.exe
+*.o
+*.obj
+
+# 运行 / 测试产物
+logs/
+test/results/
+*.log
+
+# 本机配置（含绝对路径，勿提交）
+settings.ini
+
+# 第三方二进制：iperf3 与 Cygwin 运行时（自备，不随包分发）
+tools/
+iperf3.21/
+
+# 编辑 / 系统噪音
+*备份*
+*_bak*
+Thumbs.db
+desktop.ini
+.DS_Store
