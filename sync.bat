@@ -49,44 +49,44 @@ goto :interactive
 
 
 :showhelp
-echo.
+echo(
 echo Usage:
 echo   sync.bat                 show changes, ask for a message, commit + push
 echo   sync.bat "message"       commit with the given message, then push
 echo   sync.bat status          show status only
 echo   sync.bat push            push only
 echo   sync.bat help            this help
-echo.
+echo(
 echo Repo  : %REPO%
 echo Branch:
 "%GIT%" branch --show-current
-echo.
+echo(
 echo To publish a new release:
 echo   "%GH%" release create v1.1.1 "..\iperf3gui.exe" --title "iperf3 GUI V1.1.1" --notes-file notes.md
-echo.
+echo(
 exit /b 0
 
 
 :showstatus
 echo === Branch ===
 "%GIT%" branch --show-current
-echo.
+echo(
 echo === Changes ===
 "%GIT%" status --short
-echo.
+echo(
 echo === Last 5 commits ===
 "%GIT%" log --oneline -5
-echo.
+echo(
 exit /b 0
 
 
 :interactive
 echo === Branch ===
 "%GIT%" branch --show-current
-echo.
+echo(
 echo === Changes ===
 "%GIT%" status --short
-echo.
+echo(
 
 "%GIT%" status --porcelain > "%TMPF%" 2>nul
 set "SZ=0"
@@ -97,7 +97,7 @@ if "%SZ%"=="0" (
     goto :dopush
 )
 
-echo.
+echo(
 set "MSG="
 set /p MSG=Commit message: 
 if not defined MSG (
@@ -114,7 +114,7 @@ if not defined MSG (
     exit /b 1
 )
 
-echo.
+echo(
 echo === Committing ===
 "%GIT%" add -A
 if errorlevel 1 (
@@ -128,7 +128,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo.
+echo(
 echo === Pushing ===
 "%GIT%" push
 if errorlevel 1 (
