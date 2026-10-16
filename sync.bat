@@ -20,6 +20,10 @@ set "GH=C:\Program Files\GitHub CLI\gh.exe"
 set "REPO=%~dp0"
 set "TMPF=%TEMP%\iperf3gui_sync.tmp"
 
+rem git spawns git-credential-manager as a child process and resolves it via
+rem PATH. Without this, push cannot obtain credentials and fails.
+set "PATH=C:\Program Files\Git\bin;C:\Program Files\Git\cmd;C:\Program Files\GitHub CLI;%PATH%"
+
 if not exist "%GIT%" (
     echo [ERROR] git not found: %GIT%
     exit /b 1
