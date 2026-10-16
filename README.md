@@ -421,8 +421,20 @@ CBO_REPLAY_UNIT (CBN_SELCHANGE)
 本程序（iperf3 GUI）以 **MIT License** 授权，版权 **Copyright (c) 2026 BenjmSek**。
 
 - 完整条款见仓库根目录 `LICENSE`；程序内「License」对话框内置同一份英文原文（三语摘要 + 恒英文条款）。
-- 本程序**不包含也不分发** iperf3 及其运行时依赖（`cygwin1.dll` 等）。用户需自行获取 iperf3（≥ 3.7）供本程序调用。
-- iperf3 自身采用 BSD-3-Clause（ESnet/LLNL），与本程序的 MIT 授权相互独立。
+
+### 第三方依赖（不在本仓库内，需自备）
+
+本程序**不包含也不分发** iperf3 及其运行时依赖（`iperf3.exe`、`cygwin1.dll`、
+`cygcrypto-3.dll`、`cygz.dll`）。用户需自行获取 iperf3（建议 ≥ 3.7，以支持
+`--bidir`），再在「设置」页指定其路径供本程序调用。
+
+| 组件 | 许可 | 版权方 |
+|---|---|---|
+| iperf3 | BSD-3-Clause | The Regents of the University of California, through **Lawrence Berkeley National Laboratory (LBNL)** |
+| Cygwin 运行时（`cygwin1.dll` 等） | LGPL-3.0-or-later（附 Cygwin 链接例外） | Red Hat / Cygwin 项目 |
+
+两者与本程序的 MIT 授权相互独立、互不影响。完整许可声明分别见
+[esnet/iperf](https://github.com/esnet/iperf) 与 [Cygwin 官网](https://cygwin.com/)。
 
 ## 14. 变更记录
 

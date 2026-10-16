@@ -470,9 +470,20 @@ This program (iperf3 GUI) is licensed under the **MIT License**, **Copyright (c)
 
 - Full terms in `LICENSE` at the repository root; the in-app "License" dialog embeds the same English
   text (trilingual summary + always-English terms).
-- This program **neither includes nor distributes** iperf3 or its runtime dependencies
-  (`cygwin1.dll` etc.). Users obtain iperf3 (≥ 3.7) themselves for this program to call.
-- iperf3 itself is BSD-3-Clause (ESnet/LLNL), independent of this program's MIT license.
+
+### Third-party dependencies (not in this repo — bring your own)
+
+This program **neither includes nor distributes** iperf3 or its runtime dependencies
+(`iperf3.exe`, `cygwin1.dll`, `cygcrypto-3.dll`, `cygz.dll`). Obtain iperf3 yourself
+(≥ 3.7 recommended, for `--bidir` support) and point the GUI at it on the Settings page.
+
+| Component | License | Copyright holder |
+|---|---|---|
+| iperf3 | BSD-3-Clause | The Regents of the University of California, through **Lawrence Berkeley National Laboratory (LBNL)** |
+| Cygwin runtime (`cygwin1.dll` etc.) | LGPL-3.0-or-later (with the Cygwin linking exception) | Red Hat / the Cygwin project |
+
+Both are independent of this program's MIT license and neither infects it. Full terms:
+[esnet/iperf](https://github.com/esnet/iperf) and [cygwin.com](https://cygwin.com/).
 
 ---
 

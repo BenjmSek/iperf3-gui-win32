@@ -19,18 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-本程序（iperf3 GUI）**不包含也不分发** iperf3 及其运行时依赖
-（iperf3.exe、cygwin1.dll、cygcrypto-3.dll、cygz.dll）。
-用户需自行获取 iperf3（建议 >= 3.7，以支持 `--bidir`），
-再在「设置」页指定其路径供本程序调用。
-
-iperf3 本身采用 **BSD-3-Clause**，版权归 *The Regents of the University of
-California, through Lawrence Berkeley National Laboratory (LBNL)*，
-与本项目的 MIT 授权相互独立、互不影响。完整许可声明见
-https://github.com/esnet/iperf
-
-Cygwin 运行时（cygwin1.dll 等）另有其自身许可（LGPL-3.0-or-later，
-附 Cygwin 链接例外），同样不随本仓库分发。
