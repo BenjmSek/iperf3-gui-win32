@@ -117,7 +117,7 @@ if errorlevel 1 (
 
 "%GIT%" commit -m "%MSG%"
 if errorlevel 1 (
-    echo [ERROR] commit failed (nothing staged, or hook failed)
+    echo [ERROR] commit failed - nothing staged, or a hook rejected it
     exit /b 1
 )
 
