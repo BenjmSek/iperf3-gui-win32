@@ -39,48 +39,43 @@ if errorlevel 1 (
 )
 
 rem ---------- dispatch ----------
-if /i "%~1"=="help"   goto :showhelp
-if /i "%~1"=="-h"     goto :showhelp
-if /i "%~1"=="--help" goto :showhelp
-if /i "%~1"=="status" goto :showstatus
-if /i "%~1"=="push"   goto :dopush
-if not "%~1"==""      goto :commit
-goto :interactive
+if /i "%~1"=="push" goto :dopush
 
+if /i "%~1"=="help" (
+    echo(
+    echo Usage:
+    echo   sync.bat                 show changes, ask for a message, commit + push
+    echo   sync.bat "message"       commit with the given message, then push
+    echo   sync.bat status          show status only
+    echo   sync.bat push            push only
+    echo   sync.bat help            this help
+    echo(
+    echo Repo  : %REPO%
+    echo Branch:
+    "%GIT%" branch --show-current
+    echo(
+    echo To publish a new release:
+    echo   "%GH%" release create v1.1.1 "..\iperf3gui.exe" --title "iperf3 GUI V1.1.1" --notes-file notes.md
+    echo(
+    exit /b 0
+)
 
-:showhelp
-echo(
-echo Usage:
-echo   sync.bat                 show changes, ask for a message, commit + push
-echo   sync.bat "message"       commit with the given message, then push
-echo   sync.bat status          show status only
-echo   sync.bat push            push only
-echo   sync.bat help            this help
-echo(
-echo Repo  : %REPO%
-echo Branch:
-"%GIT%" branch --show-current
-echo(
-echo To publish a new release:
-echo   "%GH%" release create v1.1.1 "..\iperf3gui.exe" --title "iperf3 GUI V1.1.1" --notes-file notes.md
-echo(
-exit /b 0
+if /i "%~1"=="status" (
+    echo === Branch ===
+    "%GIT%" branch --show-current
+    echo(
+    echo === Changes ===
+    "%GIT%" status --short
+    echo(
+    echo === Last 5 commits ===
+    "%GIT%" log --oneline -5
+    echo(
+    exit /b 0
+)
 
+rem ---------- resolve the commit message ----------
+if not "%~1"=="" goto :commit
 
-:showstatus
-echo === Branch ===
-"%GIT%" branch --show-current
-echo(
-echo === Changes ===
-"%GIT%" status --short
-echo(
-echo === Last 5 commits ===
-"%GIT%" log --oneline -5
-echo(
-exit /b 0
-
-
-:interactive
 echo === Branch ===
 "%GIT%" branch --show-current
 echo(
@@ -96,15 +91,13 @@ if "%SZ%"=="0" (
     echo Nothing to commit.
     goto :dopush
 )
-
 echo(
 set "MSG="
-set /p MSG=Commit message: 
+set /p MSG=Commit message:
 if not defined MSG (
     echo [ERROR] empty message, aborted.
     exit /b 1
 )
-goto :commit
 
 
 :commit
@@ -128,19 +121,9 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo(
-echo === Pushing ===
-"%GIT%" push
-if errorlevel 1 (
-    echo [ERROR] push failed
-    exit /b 1
-)
-echo Done.
-echo https://github.com/BenjmSek/iperf3-gui-win32
-exit /b 0
-
 
 :dopush
+echo(
 echo === Pushing ===
 "%GIT%" push
 if errorlevel 1 (
