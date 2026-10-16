@@ -124,14 +124,23 @@ if errorlevel 1 (
 
 "%GIT%" commit -m "%MSG%"
 if errorlevel 1 (
-    echo [ERROR] commit failed (nothing staged, or pre-commit hook failed)
+    echo [ERROR] commit failed (nothing staged, or hook failed)
     exit /b 1
 )
-goto :dopush
+
+echo.
+echo === Pushing ===
+"%GIT%" push
+if errorlevel 1 (
+    echo [ERROR] push failed
+    exit /b 1
+)
+echo Done.
+echo https://github.com/BenjmSek/iperf3-gui-win32
+exit /b 0
 
 
 :dopush
-echo.
 echo === Pushing ===
 "%GIT%" push
 if errorlevel 1 (
